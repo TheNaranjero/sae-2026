@@ -1,0 +1,7 @@
+[project]
+name = "sae-2026"
+version = "0.1.0"
+description = "Simulaciones de montecarlo para estudair diferentes variantes de la prueba de Levene. Proyecto presentado al concurso de la SAE 2026"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
