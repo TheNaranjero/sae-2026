@@ -7,14 +7,14 @@ import warnings
 from astropy.stats import biweight_location
 from functools import partial
 from scipy import stats
-from scipy.stats import rankdata,  chi2, t, lognorm, exponential
+from scipy.stats import rankdata,  chi2, t, lognorm
 from statsmodels.tools.sm_exceptions import DomainWarning
 
 # Ignore only DomainWarning
 warnings.filterwarnings("ignore", category=DomainWarning)
 
-chisqprob = lambda chisq, df: stats.chi2.sf(chisq, df) #Para calcular los valores críticos en las tablas basadas en chi cuadradado.
-
+def chisqprob(chisq, df):
+    return stats.chi2.sf(chisq, df)
 ###################################
 N_SIMULATIONS = 10_000  # CANTIDAD DE SIMULACIONES
 N_PERMUTATIONS = 5_000  # CANTIDAD DE PERMUTACIONES EN LOS TESTS
