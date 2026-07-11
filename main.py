@@ -1098,7 +1098,40 @@ def main():
                             for test_name, test_func in TESTS_SELECTED.items():
                                 output_file[sample_size][groups][dist_name][scenario[i]][center_name][test_name] += test_func(abs_dev)
 
+    if ACTIVE_SCENARIOS["Different SD"]:
 
+        print("Escenario 18,19,20: Potencia para distintas distribuciones de los tests seleccionados")
+        current_time_human = time.ctime()
+        print(f"Start time (human-readable): {current_time_human}")
+
+        scenario = [18,19,20]
+
+
+        for simulation in range(N_SIMULATIONS):
+            if simulation % 10 == 0:
+                print(simulation)
+            for sample_size in SAMPLE_SIZES_SELECTED:
+                for groups in GROUPS_SELECTED:
+                    for dist_idx, (dist_name, dist_func) in enumerate(DISTRIBUTIONS.items()):
+                        original_data = np.array_split(
+                            np.array(dist_func(size=groups * sample_size)), groups
+                        )
+                        # reemplaza data por la original
+                        for i in [0, 1, 2]:
+                            data = get_copy(original_data)
+                            if i == 0:
+                                data[0] *= 2
+                            elif i == 1:
+                                for j in range(groups/2):
+                                    data[j] *= 2
+                            else:
+                                for j in range(groups/2):
+                                    data[j] *= ( 1.0 + j / (groups-1) )
+
+                            for center_name, center_func in CENTER_FUNCTIONS_SELECTED.items():
+                                abs_dev = [np.abs(np.array(d) - center_func(d)) for d in data]
+                                for test_name, test_func in TESTS_SELECTED.items():
+                                    output_file[sample_size][groups][dist_name][scenario[i]][center_name][test_name] += test_func(abs_dev)
 
 
 
