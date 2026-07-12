@@ -18,8 +18,8 @@ warnings.filterwarnings("ignore", category=DomainWarning)
 
 
 ###################################
-N_SIMULATIONS = 10_000  # CANTIDAD DE SIMULACIONES
-N_PERMUTATIONS = 5_000  # CANTIDAD DE PERMUTACIONES EN LOS TESTS
+N_SIMULATIONS = 1_000  # CANTIDAD DE SIMULACIONES
+N_PERMUTATIONS = 2_000  # CANTIDAD DE PERMUTACIONES EN LOS TESTS
 
 RNG = np.random.default_rng(31_415_926_535)
 
@@ -791,14 +791,14 @@ CENTER_FUNCTIONS_SELECTED= {
     "median": np.median
 }
 
-SAMPLE_SIZES = [4, 8, 12,  16, 20, 24,  28, 30, 32, 36, 40,  100, 250, 500, 750, 1000  ]
+SAMPLE_SIZES = [4, 8, 10, 12,  16, 20, 24,  28, 30, 32, 36, 40, 60, 80,  100   ]
 SAMPLE_SIZES_SELECTED = [10,20, 40]
 GROUPS = [2,4,6,8,10,12,14,16,18,20]
 GROUPS_SELECTED = [4,8]
 EFFECTS = [1.25, 1.50, 2, 2.50, 3, 4, 5]
 
 
-SCENARIOS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+SCENARIOS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
 
 TESTS = {
@@ -1100,11 +1100,11 @@ def main():
 
     if ACTIVE_SCENARIOS["Different SD"]:
 
-        print("Escenario 18,19,20: Potencia para distintas distribuciones de los tests seleccionados")
+        print("Escenario 19,20,21: Potencia para distintas distribuciones de los tests seleccionados")
         current_time_human = time.ctime()
         print(f"Start time (human-readable): {current_time_human}")
 
-        scenario = [18,19,20]
+        scenario = [19,20,21]
 
 
         for simulation in range(N_SIMULATIONS):
@@ -1122,10 +1122,10 @@ def main():
                             if i == 0:
                                 data[0] *= 2
                             elif i == 1:
-                                for j in range(groups/2):
+                                for j in range(groups//2):
                                     data[j] *= 2
                             else:
-                                for j in range(groups/2):
+                                for j in range(groups//2):
                                     data[j] *= ( 1.0 + j / (groups-1) )
 
                             for center_name, center_func in CENTER_FUNCTIONS_SELECTED.items():
@@ -1133,8 +1133,7 @@ def main():
                                 for test_name, test_func in TESTS_SELECTED.items():
                                     output_file[sample_size][groups][dist_name][scenario[i]][center_name][test_name] += test_func(abs_dev)
 
-
-
+    #Termina la simulación
     current_time_human = time.ctime()
 
     print(f"Finish time (human-readable): {current_time_human}")
@@ -1162,7 +1161,7 @@ def main():
                             ]
                             output_list.append(element)
     # Save to CSV
-    csv_file = "tesis.csv"
+    csv_file = "simulacion.csv"
 
     print(output_list[2])
 
