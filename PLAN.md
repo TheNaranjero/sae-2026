@@ -1,3 +1,15 @@
+# LISTA DE TAREAS
+
+- Añadir Cantidad de grupos y Desvíos distintos a **main.py**. [HECHO]
+- Añadir más pruebas a **main.py**. [HECHO]
+- Ajustar los tamaños muestrales, cantidad de puebas, pruebas, etc según la esturctura del trabajo. [HECHO]
+- Preparar gráficos en R (o el ggplot de python).
+- Armar informe de ejemplo en markdown.
+- Decidir la extensión de la presentación y la exclusión de secciones.
+- Decidir si se añadirá "tamaños muestrales diferentes" como etapa.
+
+
+
 # ESTRUCTURA DEL TRABAJO
 
 - Mostrar para n=20, 4 grupos, distribución normal y exponencial.
