@@ -4,4 +4,15 @@ version = "0.1.0"
 description = "Simulaciones de montecarlo para estudair diferentes variantes de la prueba de Levene. Proyecto presentado al concurso de la SAE 2026"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "astropy>=8.0.1",
+    "numpy>=2.5.1",
+    "pandas>=3.0.3",
+    "scipy>=1.18.0",
+    "statsmodels>=0.14.6",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.21",
+]
