@@ -3,8 +3,8 @@
 - Añadir Cantidad de grupos y Desvíos distintos a **main.py**. [HECHO]
 - Añadir más pruebas a **main.py**. [HECHO]
 - Ajustar los tamaños muestrales, cantidad de puebas, pruebas, etc según la esturctura del trabajo. [HECHO]
-- Preparar gráficos en R (o el ggplot de python).
-- Armar informe de ejemplo en markdown.
+- Preparar gráficos en R (o el ggplot de python). [LISTOS LOS PRIMEROS 8 GRAFICOS]
+- Armar informe de ejemplo en markdown. [ACTUALIZADO A LOS PRIMEROS 8 GRAFICOS]
 - Decidir la extensión de la presentación y la exclusión de secciones.
 - Decidir si se añadirá "tamaños muestrales diferentes" como etapa.
 
