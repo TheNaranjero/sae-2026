@@ -54,7 +54,7 @@ Para la distribuciones simétricas alcanzan potencias aceptables para tamaño 20
 Para distribuciones simétricas, se controla el error tipo I en todos los casos.
 Para distribuciones asimétricas solo ANOVA y ANOVA por permutación controlan el error tipo I para 6 más grupos
 
-![grafico 8](<figures/Grafico 7 Poteencia segun Cantidad de Grupos.png>)
+![grafico 8](<figures/Grafico 8 Poteencia segun Cantidad de Grupos.png>)
 
 
 Para el ANOVA y ANOVA por permutación Se observa que la potencia es menor para 2 grupos, se estabiliza para 4 a 12 grupos, y disminuye para 14 a 20 grupos
