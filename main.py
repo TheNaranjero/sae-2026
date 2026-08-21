@@ -1,16 +1,17 @@
 import csv
-import numpy as np
 import time
 import warnings
-import pandas as pd
-import statsmodels.api as sm 
-import statsmodels.formula.api as smf
-
-from astropy.stats import biweight_location
 from functools import partial
+
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from astropy.stats import biweight_location
 from scipy import stats
-from scipy.stats import rankdata,  chi2, t, lognorm, norm
+from scipy.stats import chi2, lognorm, norm, rankdata, t
 from statsmodels.tools.sm_exceptions import DomainWarning
+
 # Ignore only DomainWarning
 warnings.filterwarnings("ignore", category=DomainWarning)
 
@@ -328,7 +329,7 @@ def ANOVA_VanDerWaerden(data):
 
     s2 = 1 / (N - 1) * np.sum(np.square(combined_data))  # calcula la varianza
 
-    a = list()  # calcula la media de cada grupo
+    a = []  # calcula la media de cada grupo
     for d in normal_scores:
         a.append(np.mean(d))
 
@@ -419,7 +420,7 @@ def Mood(data):
 ########    ANOVA Winsorizado    ###############
 def ANOVA_winsorized(data):
 
-    winsorized_data = list()
+    winsorized_data = []
     for d in data:
         lower = np.percentile(np.array(d), 12.25)  # un cuarto de los datos
         upper = np.percentile(np.array(d), 87.75)

@@ -1,6 +1,7 @@
-import pandas as pd
 from pathlib import Path
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 N_SIMULATIONS = 1_000
@@ -225,14 +226,14 @@ def scatter_plot(
     scenario,
     group = 4,
     sample_size = 20,
-    dist_name = ["Normal", "Exponencial"],
+    dist_name = None,
 
     dot_color = OKABE_ITO["SKYBLUE"],
     x_label = "Porcentaje de Rechazo (%)",
     y_label = "Medida de Centralidad",
     title_label = "Error Tipo I para las distintas medidas de centtralidad",
 
-    x_ticks = [0, 20, 40, 60, 80, 100],
+    x_ticks =None,
     x_lim = (0,100),
 
     lines = None,
@@ -240,6 +241,13 @@ def scatter_plot(
     note = None,
 
     ):
+
+    if dist_name is None:
+        dist_name = ["Normal", "Exponencial"]
+    if x_ticks is None:
+        x_ticks =  [0, 20, 40, 60, 80, 100]
+
+    
     #convierte todo a lista
     scenario = ensure_list(scenario)
     group = ensure_list(group)
@@ -389,7 +397,7 @@ def bar_plot(
     y_var,
     group = 4,
     sample_size = 20,
-    dist_name = ["Normal", "Exponencial"],
+    dist_name = None,
     center_name = "Mediana",
 
     dot_color = OKABE_ITO["SKYBLUE"],
@@ -397,7 +405,7 @@ def bar_plot(
     y_label = "Medida de Centralidad",
     title_label = "Error Tipo I para las distintas medidas de centtralidad",
 
-    x_ticks = [0, 20, 40, 60, 80, 100],
+    x_ticks = None,
     x_lim = (0,100),
 
     lines = None,
@@ -405,6 +413,13 @@ def bar_plot(
     note = None,
 
     ):
+
+    if dist_name is None:
+        dist_name = ["Normal", "Exponencial"]
+    if x_ticks is None:
+        x_ticks = [0, 20, 40, 60, 80, 100]
+
+
     #convierte todo a lista
     scenario = ensure_list(scenario)
     group = ensure_list(group)
@@ -554,23 +569,18 @@ def line_plot(
     hue_var,
     group = 4,
     sample_size = 20,
-    dist_name = ["Normal", "Exponencial"],
+    dist_name = None,
     center_name = "Mediana",
-    test = ["ANOVA", "Permutación","ANOVA Raiz", "Welch"],
+    test = None,
 
-    palette={
-        "ANOVA" : OKABE_ITO["SKYBLUE"], 
-        "Permutación": OKABE_ITO["ORANGE"] ,
-        "ANOVA Raiz": OKABE_ITO["MAGENTA"], 
-        "Welch": OKABE_ITO["GREENBLUE"]
-    },
+    palette=None,
 
     dot_color = OKABE_ITO["SKYBLUE"],
     x_label = "Porcentaje de Rechazo (%)",
     y_label = "Medida de Centralidad",
     title_label = "Error Tipo I para las distintas medidas de centtralidad",
 
-    y_ticks = [0, 20, 40, 60, 80, 100],
+    y_ticks = None,
     y_lim = (0,100),
 
     lines = None,
@@ -578,6 +588,27 @@ def line_plot(
     note = None,
 
     ):
+
+    
+    if dist_name is None:
+        dist_name = ["Normal", "Exponencial"]
+    if y_ticks is None:
+        y_ticks = [0, 20, 40, 60, 80, 100]
+    if test is None:
+        test =  ["ANOVA", "Permutación","ANOVA Raiz", "Welch"]
+
+    if palette is None:
+        palette = {
+        "ANOVA" : OKABE_ITO["SKYBLUE"], 
+        "Permutación": OKABE_ITO["ORANGE"] ,
+        "ANOVA Raiz": OKABE_ITO["MAGENTA"], 
+        "Welch": OKABE_ITO["GREENBLUE"]
+    }
+
+
+
+
+
     #convierte todo a lista
     scenario = ensure_list(scenario)
     group = ensure_list(group)
@@ -904,10 +935,35 @@ fig = line_plot(
     lines = [2.5,7.5],
 )
 
-save_figure(fig = fig, name = "Grafico 8 Poteencia segun Cantidad de Grupos")
+save_figure(fig = fig, name = "Grafico 8 Potencia segun Cantidad de Grupos")
 
 
-## 
+## Outliers
+
+fig = line_plot(
+    scenario= [3, 14,15,16,17,18],
+    x_var = "Contaminación",
+    hue_var = "test",
+    center_name = "Mediana",
+    group = 4,
+    test=["ANOVA", "Permutación", "Welch"],
+
+    dist_name=["Normal"],
+
+
+
+    x_label = "Cantidad de Grupos",
+    y_label = "Porcentaje de Rechazo (%)",
+    title_label = "Gráfico 9: Error Tipo I según Cantidad de Valores Atípicos",
+
+    y_ticks = [0, 10, 20, 30, 40, 50, 60, ],
+    y_lim = (0,60),
+
+    lines = [2.5,7.5],
+)
+
+save_figure(fig = fig, name = "Grafico 9 Error Tipo I segun Cantidad de Valores Atípicos")
+
 
 
 
