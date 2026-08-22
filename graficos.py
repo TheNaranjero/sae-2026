@@ -231,7 +231,7 @@ def scatter_plot(
     dot_color = OKABE_ITO["SKYBLUE"],
     x_label = "Porcentaje de Rechazo (%)",
     y_label = "Medida de Centralidad",
-    title_label = "Error Tipo I para las distintas medidas de centtralidad",
+    title_label = "Error Tipo I para las distintas medidas de centralidad",
 
     x_ticks =None,
     x_lim = (0,100),
@@ -365,7 +365,7 @@ def scatter_plot(
                     color="gray",
                     linestyle="--",
                     linewidth=2,
-                    zorder=0,
+                    zorder=1,
                 )
 
         
@@ -411,6 +411,8 @@ def bar_plot(
     lines = None,
 
     note = None,
+    hue = None,
+    palette = None
 
     ):
 
@@ -418,7 +420,6 @@ def bar_plot(
         dist_name = ["Normal", "Exponencial"]
     if x_ticks is None:
         x_ticks = [0, 20, 40, 60, 80, 100]
-
 
     #convierte todo a lista
     scenario = ensure_list(scenario)
@@ -442,6 +443,11 @@ def bar_plot(
 
     plot_df["dist_name"] = (
         plot_df["dist_name"]
+        .cat.remove_unused_categories()
+    )
+
+    plot_df["test"] = (
+        plot_df["test"]
         .cat.remove_unused_categories()
     )
 
@@ -490,6 +496,9 @@ def bar_plot(
         errorbar=None,
         color=dot_color,
         alpha=0.80,
+        hue=hue,
+        palette = palette,
+
     )
 
     # ----------------------------
@@ -967,7 +976,32 @@ save_figure(fig = fig, name = "Grafico 9 Error Tipo I segun Cantidad de Valores 
 
 
 
+## Diferentes desvíos
 
+fig = bar_plot(
+    scenario = [19,20,21],
+    y_var = "Patrón SD",
+    center_name = "Mediana",
+    hue="test",
+    group=[4,8],
+
+    x_label = "Porcentaje de Rechazo (%)",
+    y_label = "Prueba de Localización",
+    title_label = "Gráfico 10: Potencia para los Distintos Patrones de Desvío Estandar",
+
+    x_ticks = [0,20 ,40, 60, 80, 100],
+    x_lim = (0,100),
+
+    lines = [80],
+    palette= {
+        "ANOVA" : OKABE_ITO["SKYBLUE"], 
+        "Permutación": OKABE_ITO["ORANGE"] ,
+        "ANOVA Raiz": OKABE_ITO["MAGENTA"], 
+        "Welch": OKABE_ITO["GREENBLUE"]
+    }
+
+)
+save_figure(fig = fig, name = "Grafico 10 Potencia para los distintos patrones de desvio estandar")
 
 
 print("-----------------------------")
