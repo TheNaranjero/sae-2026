@@ -947,31 +947,12 @@ fig = line_plot(
 save_figure(fig = fig, name = "Grafico 8 Potencia segun Cantidad de Grupos")
 
 
-## Outliers
-
-fig = line_plot(
-    scenario= [3, 14,15,16,17,18],
-    x_var = "Contaminación",
-    hue_var = "test",
-    center_name = "Mediana",
-    group = 4,
-    test=["ANOVA", "Permutación", "Welch"],
-
-    dist_name=["Normal"],
+## Tamaño del efecto
 
 
 
-    x_label = "Cantidad de Grupos",
-    y_label = "Porcentaje de Rechazo (%)",
-    title_label = "Gráfico 9: Error Tipo I según Cantidad de Valores Atípicos",
 
-    y_ticks = [0, 10, 20, 30, 40, 50, 60, ],
-    y_lim = (0,60),
 
-    lines = [2.5,7.5],
-)
-
-save_figure(fig = fig, name = "Grafico 9 Error Tipo I segun Cantidad de Valores Atípicos")
 
 
 
@@ -1002,6 +983,36 @@ fig = bar_plot(
 
 )
 save_figure(fig = fig, name = "Grafico 10 Potencia para los distintos patrones de desvio estandar")
+
+
+## Outliers
+
+fig = line_plot(
+    scenario= [3, 14,15,16,17,18],
+    x_var = "Contaminación",
+    hue_var = "test",
+    center_name = "Mediana",
+    group = 4,
+    test=["ANOVA", "Permutación", "Welch"],
+
+    dist_name=["Normal"],
+
+
+
+    x_label = "Cantidad de Grupos",
+    y_label = "Porcentaje de Rechazo (%)",
+    title_label = "Gráfico 11: Error Tipo I según Cantidad de Valores Atípicos",
+
+    y_ticks = [0, 10, 20, 30, 40, 50, 60, ],
+    y_lim = (0,60),
+
+    lines = [2.5,7.5],
+)
+
+save_figure(fig = fig, name = "Grafico 11 Error Tipo I segun Cantidad de Valores Atípicos")
+
+
+
 
 
 print("-----------------------------")

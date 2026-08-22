@@ -63,7 +63,11 @@ Para el ANOVA de Welch, en distribuciones simétricas la potencia dismnuye progr
 
 ## Tamaño del Efecto
 
-## Distribución de los desvíos
+## Patrón de los desvíos
+
+![grafico 10](<figures/Grafico 10 Potencia para los distintos patrones de desvio estandar.png>)
+
 
 ## Outliers
 
+![grafico 11](<figures/Grafico 10 Potencia para los distintos patrones de desvio estandar.png>)
