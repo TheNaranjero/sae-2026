@@ -59,15 +59,27 @@ Para distribuciones asimétricas solo ANOVA y ANOVA por permutación controlan e
 
 Para el ANOVA y ANOVA por permutación Se observa que la potencia es menor para 2 grupos, se estabiliza para 4 a 12 grupos, y disminuye para 14 a 20 grupos
 
-Para el ANOVA de Welch, en distribuciones simétricas la potencia dismnuye progresivamente, para distribuciones asimétricas parece disminuir inicialmente (para k=4) y luego incrementa lentamente. EN todos los casos (salvo k=2) es menor que la potencia de los otros dos tests.
+Para el ANOVA de Welch, en distribuciones simétricas la potencia dismnuye progresivamente, para distribuciones asimétricas parece disminuir inicialmente (para k=4) y luego incrementa lentamente. En todos los casos (salvo k=2) es menor que la potencia de los otros dos tests.
 
 ## Tamaño del Efecto
+![grafico 9](<figures/Grafico 9 Potencia segun Tamano del Efecto.png>)
+
+Para el ANOVA y ANOVA por permutación Se observa que la potencia incrementa cuando lo hace el tamaño del efecto. En la distribución normal alcanza una potencia del 80% cuando uno de los grupos tiene un desvío del doble que el resto. Por otro lado, para la distribución exponencial se necesita un desvío estandar del triple que el resto.
+
+El ANOVA de welch presenta una potencia mucho menor en ambas distribuciones, aunque incrementa lentamente al elevarse el tamaño del efecto.
+
+
 
 ## Patrón de los desvíos
 
 ![grafico 10](<figures/Grafico 10 Potencia para los distintos patrones de desvio estandar.png>)
 
+Se analizaron los casos donde uno de los desvíos era del doble que el resto, la mitad era del doble del resto y para cuando todos los desvíos eran distintos, aumentando progresivamente de 1 a 2. Esto se estudio para 4 y 8 grupos.
+
+Destaca que cuando todos los grupos tienen desvíos diferentes entonces las pruebas sufren de una perdida de potencia.
+
+Por otro lado, en el caso de 4 grupos tener uno o dos grupos diferentes del resto presentan un comportamiento similar, sin embargo al incrementar la cantidad de grupos, el tener más grupos con desvíos altos si eleva la potencia.
 
 ## Outliers
 
-![grafico 11](<figures/Grafico 10 Potencia para los distintos patrones de desvio estandar.png>)
+![grafico 11](<figures/Grafico 11 Error Tipo I segun Cantidad de Valores Atípicos.png>)

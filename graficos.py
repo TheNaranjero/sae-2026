@@ -133,7 +133,7 @@ def load_simulation_data(n_simulations, filename="simulacion.csv"):
         10: 2.50,
         11: 3.00,
         12: 4.00,
-        14: 5.00,
+        13: 5.00,
     }
 
     df["Cociente SD"] = (
@@ -950,11 +950,27 @@ save_figure(fig = fig, name = "Grafico 8 Potencia segun Cantidad de Grupos")
 ## Tamaño del efecto
 
 
+fig = line_plot(
+    scenario=[7,8,9,10,11,12,13],
+    x_var = "Cociente SD",
+    hue_var = "test",
+    center_name = "Mediana",
+    group = [4],
 
 
+    x_label = "Cantidad de Grupos",
+    y_label = "Porcentaje de Rechazo (%)",
+    title_label = "Gráfico 9: Potencia según Tamaño del Efecto",
 
+    #x_ticks = [1, 1.5, 2, 2.5,3,3.5,4,4.5,5],
 
+    y_ticks = [0, 20, 40, 60, 80, 100],
+    y_lim = (0,100),
 
+    lines = [80],
+)
+
+save_figure(fig = fig, name = "Grafico 9 Potencia segun Tamano del Efecto")
 
 
 ## Diferentes desvíos
