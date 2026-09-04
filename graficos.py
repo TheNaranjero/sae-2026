@@ -386,8 +386,10 @@ def scatter_plot(
         )
 
     g.figure.tight_layout()
+    g.figure.set_size_inches(30/2.54, 15/2.54)
 
     return g.figure
+
 
 ### barplot
 
@@ -412,7 +414,8 @@ def bar_plot(
 
     note = None,
     hue = None,
-    palette = None
+    palette = None,
+    test = None
 
     ):
 
@@ -420,6 +423,23 @@ def bar_plot(
         dist_name = ["Normal", "Exponencial"]
     if x_ticks is None:
         x_ticks = [0, 20, 40, 60, 80, 100]
+    if test is None:
+        test =["ANOVA",
+                    "Permutación",
+                    "Welch",
+        
+                    "ANOVA Log",
+                    "ANOVA Raiz",
+                    "Winsorizado",
+        
+                    "Kruskal-Wallis",
+                    "Van Der Waerden",
+        
+                    "MLG Gamma",
+        
+                    "Cucconi",
+                    "Lepage",
+                    "Mood",]
 
     #convierte todo a lista
     scenario = ensure_list(scenario)
@@ -428,6 +448,7 @@ def bar_plot(
     dist_name = ensure_list(dist_name)
     lines = ensure_list(lines)
     center_name = ensure_list(center_name)
+    test = ensure_list(test)
 
 
 
@@ -439,6 +460,7 @@ def bar_plot(
         & (df["sample_size"].isin(sample_size))
         & (df["center_name"].isin(center_name))
         & (df["dist_name"].isin(["Normal", "Exponencial"]))
+         & (df["test"].isin(test))
     ].copy()
 
     plot_df["dist_name"] = (
@@ -528,7 +550,7 @@ def bar_plot(
     g.set_titles("{col_name}")
 
     # 2. Add the shared main title
-    g.fig.suptitle(title_label, fontsize=30)
+    # g.fig.suptitle(title_label, fontsize=30)
     # 3. Adjust spacing so the title doesn't overlap the subplots
     g.fig.subplots_adjust(top=0.85)
 
@@ -587,10 +609,13 @@ def line_plot(
     dot_color = OKABE_ITO["SKYBLUE"],
     x_label = "Porcentaje de Rechazo (%)",
     y_label = "Medida de Centralidad",
-    title_label = "Error Tipo I para las distintas medidas de centtralidad",
+    title_label =None,
 
     y_ticks = None,
     y_lim = (0,100),
+
+    x_ticks = None,
+
 
     lines = None,
 
@@ -684,8 +709,8 @@ def line_plot(
         col="dist_name",
         sharex=True,
         sharey=True,
-        height=6,
-        aspect=1.1,
+        height=9,
+        aspect=0.9,
         despine=False,
     )
 
@@ -698,7 +723,8 @@ def line_plot(
         palette = palette,
         markers=True,
         dashes=True,
-        linewidth=3,
+        linewidth=5,
+        markersize = 12,
     )
 
     g.add_legend(title="Pruebas")
@@ -720,22 +746,22 @@ def line_plot(
     g.figure.supxlabel(
         x_label,
         fontsize=28,
-        y = 0.05
+        y = -0.02
     )
     #Y label común
 
     g.figure.supylabel(
         y_label,
         fontsize=28,
-        x=0.02
+        x=-0.02
     )
 
     g.set_titles("{col_name}")
 
     # 2. Add the shared main title
-    g.fig.suptitle(title_label, fontsize=30)
+    #g.fig.suptitle(title_label, fontsize=30)
     # 3. Adjust spacing so the title doesn't overlap the subplots
-    g.fig.subplots_adjust(top=0.85, right = 0.82)
+    g.fig.subplots_adjust(left = 0.10)
 
 
     # ----------------------------
@@ -760,6 +786,10 @@ def line_plot(
     ax.set_ylim(y_lim)
     ax.set_yticks(y_ticks)
 
+    if x_ticks is not None:
+        ax.set_xticks(x_ticks)
+
+
     if pd.isnull(note):
         pass
     else:
@@ -773,6 +803,8 @@ def line_plot(
         )
 
     g.figure.tight_layout()
+    g.figure.set_size_inches(30/2.54, 15/2.54)
+
 
     return g.figure
 
@@ -919,6 +951,9 @@ fig = line_plot(
     y_ticks = [0, 5, 10, 15, 20],
     y_lim = (0,20),
 
+    x_ticks = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
+
+
     lines = [2.5,7.5],
 )
 
@@ -941,7 +976,7 @@ fig = line_plot(
     y_ticks = [0, 20, 40, 60, 80, 100],
     y_lim = (0,100),
 
-    lines = [2.5,7.5],
+    lines = [80],
 )
 
 save_figure(fig = fig, name = "Grafico 8 Potencia segun Cantidad de Grupos")
@@ -973,7 +1008,7 @@ fig = line_plot(
 save_figure(fig = fig, name = "Grafico 9 Potencia segun Tamano del Efecto")
 
 
-## Diferentes desvíos
+## Diferentes patrones de desvíos
 
 fig = bar_plot(
     scenario = [19,20,21],
@@ -983,7 +1018,7 @@ fig = bar_plot(
     group=[4,8],
 
     x_label = "Porcentaje de Rechazo (%)",
-    y_label = "Prueba de Localización",
+    y_label = "Patrón de Desvíos Estándar",
     title_label = "Gráfico 10: Potencia para los Distintos Patrones de Desvío Estandar",
 
     x_ticks = [0,20 ,40, 60, 80, 100],
@@ -995,7 +1030,9 @@ fig = bar_plot(
         "Permutación": OKABE_ITO["ORANGE"] ,
         "ANOVA Raiz": OKABE_ITO["MAGENTA"], 
         "Welch": OKABE_ITO["GREENBLUE"]
-    }
+    },
+
+    test = ["ANOVA", "Permutación", "Welch", "ANOVA Raiz"]
 
 )
 save_figure(fig = fig, name = "Grafico 10 Potencia para los distintos patrones de desvio estandar")
@@ -1015,7 +1052,7 @@ fig = line_plot(
 
 
 
-    x_label = "Cantidad de Grupos",
+    x_label = "Porcentaje de Contaminación (%)",
     y_label = "Porcentaje de Rechazo (%)",
     title_label = "Gráfico 11: Error Tipo I según Cantidad de Valores Atípicos",
 
