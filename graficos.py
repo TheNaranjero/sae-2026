@@ -237,6 +237,7 @@ def scatter_plot(
     x_lim = (0,100),
 
     lines = None,
+    test = None,
 
     note = None,
 
@@ -247,13 +248,34 @@ def scatter_plot(
     if x_ticks is None:
         x_ticks =  [0, 20, 40, 60, 80, 100]
 
-    
+    if test is None:
+            test =["ANOVA",
+                        "Permutación",
+                        "Welch",
+            
+                        "ANOVA Log",
+                        "ANOVA Raiz",
+                        "Winsorizado",
+            
+                        "Kruskal-Wallis",
+                        "Van Der Waerden",
+            
+                        "MLG Gamma",
+            
+                        "Cucconi",
+                        "Lepage",
+                        "Mood",]
+
+
     #convierte todo a lista
     scenario = ensure_list(scenario)
     group = ensure_list(group)
     sample_size = ensure_list(sample_size)
     dist_name = ensure_list(dist_name)
+    test = ensure_list(test)
     lines = ensure_list(lines)
+
+
 
 
 
@@ -264,12 +286,18 @@ def scatter_plot(
         & (df["group"].isin(group) )
         & (df["sample_size"].isin(sample_size))
         & (df["dist_name"].isin(["Normal", "Exponencial"]))
+        & (df["test"].isin(test))
     ].copy()
 
     plot_df["dist_name"] = (
         plot_df["dist_name"]
         .cat.remove_unused_categories()
     )
+
+    plot_df["test"] = (
+            plot_df["test"]
+            .cat.remove_unused_categories()
+        )
 
     #Porcentaje de rechazo
 
@@ -814,7 +842,7 @@ def line_plot(
 
 ## Medidas de Centralidad 
 
-
+'''
 fig = scatter_plot(
     scenario = 1,
 
@@ -831,20 +859,40 @@ fig = scatter_plot(
 )
 
 save_figure(fig = fig, name = "Grafico 1 Error Tipo I para las Distintas Medidas de Centralidad")
+'''
 
 
+fig = scatter_plot(
+    scenario = 1,
+
+    x_label = "Porcentaje de Rechazo (%)",
+    y_label = "Medida de Centralidad",
+    title_label =None,
+
+    x_ticks = [0, 10, 20,30, 40],
+    x_lim = (0,40),
+
+    lines = [2.5, 7.5],
+
+    test = ["ANOVA", "Permutación", "Kruskal-Wallis"],
+
+    note = None
+)
+
+save_figure(fig = fig, name = "Grafico 1 Error Tipo I para las Distintas Medidas de Centralidad")
 
 fig = scatter_plot(
     scenario = 2,
 
     x_label = "Porcentaje de Rechazo (%)",
     y_label = "Medida de Centralidad",
-    title_label = "Gráfico 2: Potencia para las Distintas Medidas de Centralidad",
+    title_label =None,
 
     x_ticks = [0, 20, 40,60, 80, 100],
     x_lim = (0,100),
 
     lines = [80],
+    test = ["ANOVA", "Permutación", "Kruskal-Wallis"],
 
 )
 
@@ -901,10 +949,17 @@ fig = line_plot(
 
     x_label = "Tamaño Muestral",
     y_label = "Porcentaje de Rechazo (%)",
-    title_label = "Gráfico 5: Error Tipo I según Tamaño Muestral",
+    title_label = None,
 
     y_ticks = [0, 5, 10, 15, 20],
-    y_lim = (0,20),
+    y_lim = (0,25),
+
+    test = ["ANOVA", "Permutación", "Kruskal-Wallis"],
+    palette = {
+            "ANOVA" : OKABE_ITO["SKYBLUE"], 
+            "Permutación": OKABE_ITO["ORANGE"] ,
+            "Kruskal-Wallis": OKABE_ITO["MAGENTA"], 
+        },
 
     lines = [2.5,7.5],
 )
@@ -946,15 +1001,23 @@ fig = line_plot(
 
     x_label = "Cantidad de Grupos",
     y_label = "Porcentaje de Rechazo (%)",
-    title_label = "Gráfico 7: Error Tipo I según Cantidad de Grupos",
+    title_label =None,
 
-    y_ticks = [0, 5, 10, 15, 20],
-    y_lim = (0,20),
+    y_ticks = [0,  10, 20,30, ],
+    y_lim = (0,35),
 
-    x_ticks = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
+    x_ticks = [0, 4, 8, 12, 16, 20],
 
 
     lines = [2.5,7.5],
+
+    
+    test = ["ANOVA", "Permutación", "Kruskal-Wallis"],
+    palette = {
+            "ANOVA" : OKABE_ITO["SKYBLUE"], 
+            "Permutación": OKABE_ITO["ORANGE"] ,
+            "Kruskal-Wallis": OKABE_ITO["MAGENTA"], 
+        },
 )
 
 save_figure(fig = fig, name = "Grafico 7 Error Tipo I segun Cantidad de Grupos")
@@ -993,9 +1056,9 @@ fig = line_plot(
     group = [4],
 
 
-    x_label = "Cantidad de Grupos",
+    x_label = "Desvío Estándar",
     y_label = "Porcentaje de Rechazo (%)",
-    title_label = "Gráfico 9: Potencia según Tamaño del Efecto",
+    title_label =None,
 
     #x_ticks = [1, 1.5, 2, 2.5,3,3.5,4,4.5,5],
 
@@ -1003,6 +1066,11 @@ fig = line_plot(
     y_lim = (0,100),
 
     lines = [80],
+    test = ["ANOVA", "Permutación", ],
+    palette= {
+        "ANOVA" : OKABE_ITO["SKYBLUE"],
+        "Permutación" : OKABE_ITO["ORANGE"],
+    }
 )
 
 save_figure(fig = fig, name = "Grafico 9 Potencia segun Tamano del Efecto")
@@ -1028,11 +1096,9 @@ fig = bar_plot(
     palette= {
         "ANOVA" : OKABE_ITO["SKYBLUE"], 
         "Permutación": OKABE_ITO["ORANGE"] ,
-        "ANOVA Raiz": OKABE_ITO["MAGENTA"], 
-        "Welch": OKABE_ITO["GREENBLUE"]
     },
 
-    test = ["ANOVA", "Permutación", "Welch", "ANOVA Raiz"]
+    test = ["ANOVA", "Permutación"]
 
 )
 save_figure(fig = fig, name = "Grafico 10 Potencia para los distintos patrones de desvio estandar")
@@ -1046,7 +1112,7 @@ fig = line_plot(
     hue_var = "test",
     center_name = "Mediana",
     group = 4,
-    test=["ANOVA", "Permutación", "Welch"],
+    test=["ANOVA", "Permutación"],
 
     dist_name=["Normal"],
 
