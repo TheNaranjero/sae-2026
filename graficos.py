@@ -7,10 +7,13 @@ import seaborn as sns
 
 N_SIMULATIONS = 1_000
 FIGURES_DIR = Path("figures")
+CM_PER_INCH = 2.54
+DEFAULT_FIGURE_SIZE_CM = (30, 15)
 
 # ------------------------------------------------------------------------------------------------ #
 #                                      Procesamiento de datos                                      #
 # ------------------------------------------------------------------------------------------------ #
+
 
 def load_simulation_data(n_simulations, filename="simulacion.csv"):
     """Lee y prepara los resultados de una simulación.
@@ -205,16 +208,17 @@ def configure_plot_theme():
         rc={
             "font.family": "Atkinson Hyperlegible",
             "font.size": 18,
-            "axes.titlesize": 22,
-            "axes.labelsize": 22,   # Titulo de los paneles (por como están hechos)
-            "figure.titlesize": 22, # Título a nivel figuras
-            "figure.labelsize": 18,
+            "axes.titlesize": 26,  # Títulos de los paneles
+            "axes.labelsize": 18,  # Etiquetas de los ejes
+            "figure.titlesize": 22,  # Título a nivel figuras
+            "figure.labelsize": 18,  # Etiquetas a nivel de figuras
             "xtick.labelsize": 16,
             "ytick.labelsize": 16,
             "legend.fontsize": 16,
-            "grid.linewidth": 0.6,
-            "grid.color": "#A6A6A6",
-            "axes.edgecolor": "#A6A6A6",
+            "grid.linewidth": 0.7,
+            "grid.color": "#8D8D8D",
+            "axes.edgecolor": "#333333",
+            "axes.linewidth": 0.9,
             "axes.axisbelow": True,
         },
     )
@@ -229,7 +233,6 @@ def scatter_plot(
     dot_color=OKABE_ITO["SKYBLUE"],
     x_label="Porcentaje de Rechazo (%)",
     y_label="Medida de Centralidad",
-    title_label="Error Tipo I para las distintas medidas de centralidad",
     x_ticks=None,
     x_lim=(0, 100),
     lines=None,
@@ -238,6 +241,7 @@ def scatter_plot(
     band_alpha=0.50,
     band_linewidth=1.0,
     band_line_alpha=1.0,
+    figure_size_cm=DEFAULT_FIGURE_SIZE_CM,
     test=None,
     note=None,
 ):
@@ -251,7 +255,7 @@ def scatter_plot(
     if band is not None:
         try:
             band_start, band_end = band
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             raise ValueError("band debe contener exactamente dos límites") from None
 
     if test is None:
@@ -322,21 +326,8 @@ def scatter_plot(
     # ----------------------------
     # Labels
     # ----------------------------
-    g.set_axis_labels("", "")
-
-    # X label común
-    g.figure.supxlabel(x_label, y=0.05)
-
-    # Y label común
-    g.figure.supylabel(y_label, x=0.02)
-
-    g.set_titles("{col_name}")
-
-    # 2. Add the shared main title
-    g.figure.suptitle(title_label)
-
-    # 3. Adjust spacing so the title doesn't overlap the subplots
-    g.figure.subplots_adjust(top=0.85)
+    g.set_axis_labels(x_label, y_label)
+    g.set_titles("{col_name}", size=plt.rcParams["axes.titlesize"])
 
     # ----------------------------
     # Lines
@@ -387,10 +378,15 @@ def scatter_plot(
             color="dimgray",
         )
 
+    figure_width_cm, figure_height_cm = figure_size_cm
+    g.figure.set_size_inches(
+        figure_width_cm / CM_PER_INCH,
+        figure_height_cm / CM_PER_INCH,
+    )
     g.figure.tight_layout()
-    g.figure.set_size_inches(30 / 2.54, 15 / 2.54)
 
     return g.figure
+
 
 def bar_plot(
     data,
@@ -403,7 +399,6 @@ def bar_plot(
     dot_color=OKABE_ITO["SKYBLUE"],
     x_label="Porcentaje de Rechazo (%)",
     y_label="Medida de Centralidad",
-    title_label="Error Tipo I para las distintas medidas de centtralidad",
     x_ticks=None,
     x_lim=(0, 100),
     lines=None,
@@ -412,6 +407,7 @@ def bar_plot(
     band_alpha=0.20,
     band_linewidth=1.0,
     band_line_alpha=1.0,
+    figure_size_cm=DEFAULT_FIGURE_SIZE_CM,
     note=None,
     hue=None,
     palette=None,
@@ -426,7 +422,7 @@ def bar_plot(
     if band is not None:
         try:
             band_start, band_end = band
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             raise ValueError("band debe contener exactamente dos límites") from None
     if test is None:
         test = [
@@ -501,20 +497,8 @@ def bar_plot(
     # ----------------------------
     # Labels
     # ----------------------------
-    g.set_axis_labels("", "")
-
-    # X label común
-    g.figure.supxlabel(x_label, y=0.05)
-
-    # Y label común
-    g.figure.supylabel(y_label, x=0.02)
-
-    g.set_titles("{col_name}")
-
-    # 2. Add the shared main title
-    # g.fig.suptitle(title_label)
-    # 3. Adjust spacing so the title doesn't overlap the subplots
-    g.figure.subplots_adjust(top=0.85)
+    g.set_axis_labels(x_label, y_label)
+    g.set_titles("{col_name}", size=plt.rcParams["axes.titlesize"])
 
     # ----------------------------
     # Lines
@@ -565,6 +549,11 @@ def bar_plot(
             color="dimgray",
         )
 
+    figure_width_cm, figure_height_cm = figure_size_cm
+    g.figure.set_size_inches(
+        figure_width_cm / CM_PER_INCH,
+        figure_height_cm / CM_PER_INCH,
+    )
     g.figure.tight_layout()
 
     return g.figure
@@ -584,7 +573,6 @@ def line_plot(
     dot_color=OKABE_ITO["SKYBLUE"],
     x_label="Porcentaje de Rechazo (%)",
     y_label="Medida de Centralidad",
-    title_label=None,
     y_ticks=None,
     y_lim=(0, 100),
     x_ticks=None,
@@ -594,6 +582,7 @@ def line_plot(
     band_alpha=0.20,
     band_linewidth=1.0,
     band_line_alpha=1.0,
+    figure_size_cm=DEFAULT_FIGURE_SIZE_CM,
     note=None,
 ):
 
@@ -605,7 +594,7 @@ def line_plot(
     if band is not None:
         try:
             band_start, band_end = band
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             raise ValueError("band debe contener exactamente dos límites") from None
     if test is None:
         test = ["ANOVA", "Permutación", "ANOVA Raiz", "Welch"]
@@ -673,30 +662,14 @@ def line_plot(
     )
 
     g.add_legend(title="Pruebas")
-    g.legend.set_loc("center left")
-    g.legend.set_bbox_to_anchor((1.02, 0.5))
+    g.legend.set_loc("center right")
+    g.legend.set_bbox_to_anchor((0.99, 0.5))
 
     # ----------------------------
     # Labels
     # ----------------------------
-
-    g.set_axis_labels(
-        "",
-        "",
-    )
-
-    # X label común
-    g.figure.supxlabel(x_label, y=-0.02)
-
-    # Y label común
-    g.figure.supylabel(y_label, x=-0.02)
-
-    g.set_titles("{col_name}")
-
-    # 2. Add the shared main title
-    # g.figure.suptitle(title_label)
-    # 3. Adjust spacing so the title doesn't overlap the subplots
-    g.figure.subplots_adjust(left=0.10)
+    g.set_axis_labels(x_label, y_label)
+    g.set_titles("{col_name}", size=plt.rcParams["axes.titlesize"])
 
     # ----------------------------
     # Lines
@@ -750,15 +723,24 @@ def line_plot(
             color="dimgray",
         )
 
-    g.figure.tight_layout()
-    g.figure.set_size_inches(30 / 2.54, 15 / 2.54)
+    figure_width_cm, figure_height_cm = figure_size_cm
+    g.figure.set_size_inches(
+        figure_width_cm / CM_PER_INCH,
+        figure_height_cm / CM_PER_INCH,
+    )
+    g.figure.canvas.draw()
+    renderer = g.figure.canvas.get_renderer()
+    legend_bbox = g.legend.get_window_extent(renderer).transformed(g.figure.transFigure.inverted())
+    plot_right = legend_bbox.x0 - 0.02
+    g.figure.tight_layout(rect=(0, 0, plot_right, 1))
 
     return g.figure
 
 
-def save_figure(fig, name, dpi=200):
-    fig.savefig(FIGURES_DIR / f"{name}.pdf", dpi=dpi, bbox_inches="tight")
+def save_figure(fig, name):
+    fig.savefig(FIGURES_DIR / f"{name}.pdf")
     plt.close(fig)
+
 
 # ------------------------------------------------------------------------------------------------ #
 #                                      Inicialización                                              #
@@ -776,7 +758,6 @@ fig = scatter_plot(
     scenario=1,
     x_label="Porcentaje de Rechazo (%)",
     y_label="Medida de Centralidad",
-    title_label=None,
     x_ticks=[0, 10, 20, 30, 40],
     x_lim=(0, 40),
     band=(2.5, 7.5),
@@ -795,7 +776,6 @@ fig = scatter_plot(
     scenario=2,
     x_label="Porcentaje de Rechazo (%)",
     y_label="Medida de Centralidad",
-    title_label=None,
     x_ticks=[0, 20, 40, 60, 80, 100],
     x_lim=(0, 100),
     lines=[80],
@@ -811,7 +791,6 @@ fig = bar_plot(
     center_name="Mediana",
     x_label="Porcentaje de Rechazo (%)",
     y_label="Prueba de Localización",
-    title_label="Gráfico 3: Error Tipo I para las Distintas Pruebas",
     x_ticks=[0, 10, 20, 30, 40],
     x_lim=(0, 40),
     band=(2.5, 7.5),
@@ -828,7 +807,6 @@ fig = bar_plot(
     center_name="Mediana",
     x_label="Porcentaje de Rechazo (%)",
     y_label="Prueba de Localización",
-    title_label="Gráfico 4: Potencia para las Distintas Pruebas",
     x_ticks=[0, 20, 40, 60, 80, 100],
     x_lim=(0, 100),
     lines=[80],
@@ -846,7 +824,6 @@ fig = line_plot(
     sample_size=[4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
     x_label="Tamaño Muestral",
     y_label="Porcentaje de Rechazo (%)",
-    title_label=None,
     y_ticks=[0, 5, 10, 15, 20],
     y_lim=(0, 25),
     test=["ANOVA", "Permutación", "Kruskal-Wallis"],
@@ -872,7 +849,6 @@ fig = line_plot(
     sample_size=[4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
     x_label="Tamaño Muestral",
     y_label="Porcentaje de Rechazo (%)",
-    title_label="Gráfico 5: Potencia según Tamaño Muestral",
     y_ticks=[0, 20, 40, 60, 80, 100],
     y_lim=(0, 100),
     lines=[80],
@@ -892,7 +868,6 @@ fig = line_plot(
     group=[2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
     x_label="Cantidad de Grupos",
     y_label="Porcentaje de Rechazo (%)",
-    title_label=None,
     y_ticks=[
         0,
         10,
@@ -924,7 +899,6 @@ fig = line_plot(
     group=[2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
     x_label="Cantidad de Grupos",
     y_label="Porcentaje de Rechazo (%)",
-    title_label="Gráfico 8: Potencia según Cantidad de Grupos",
     y_ticks=[0, 20, 40, 60, 80, 100],
     y_lim=(0, 100),
     lines=[80],
@@ -945,8 +919,7 @@ fig = line_plot(
     group=[4],
     x_label="Desvío Estándar",
     y_label="Porcentaje de Rechazo (%)",
-    title_label=None,
-    # x_ticks = [1, 1.5, 2, 2.5,3,3.5,4,4.5,5],
+    x_ticks=[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     y_ticks=[0, 20, 40, 60, 80, 100],
     y_lim=(0, 100),
     lines=[80],
@@ -974,7 +947,6 @@ fig = bar_plot(
     group=[4, 8],
     x_label="Porcentaje de Rechazo (%)",
     y_label="Patrón de Desvíos Estándar",
-    title_label="Gráfico 10: Potencia para los Distintos Patrones de Desvío Estandar",
     x_ticks=[0, 20, 40, 60, 80, 100],
     x_lim=(0, 100),
     lines=[80],
@@ -1000,12 +972,12 @@ fig = line_plot(
     dist_name=["Normal"],
     x_label="Porcentaje de Contaminación (%)",
     y_label="Porcentaje de Rechazo (%)",
-    title_label="Gráfico 11: Error Tipo I según Cantidad de Valores Atípicos",
     y_ticks=[0, 10, 20, 30, 40, 50, 60],
     y_lim=(0, 60),
     band=(2.5, 7.5),
     band_color=OKABE_ITO["REDORANGE"],
     band_alpha=0.40,
+    figure_size_cm=(22, 15),
 )
 
 save_figure(fig=fig, name="Grafico 11 Error Tipo I segun Cantidad de Valores Atípicos")
