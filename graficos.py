@@ -412,6 +412,7 @@ def bar_plot(
     hue=None,
     palette=None,
     test=None,
+    legend = False,
 ):
 
     if dist_name is None:
@@ -492,7 +493,17 @@ def bar_plot(
         edgecolor="none",
         linewidth=0,
         zorder=2,
+        saturation=1,
+
     )
+
+    #----------------------------
+    # Legend
+    #----------------------------
+    if legend:
+        g.add_legend(title="Pruebas")
+        g.legend.set_loc("center right")
+        g.legend.set_bbox_to_anchor((0.99, 0.5))
 
     # ----------------------------
     # Labels
@@ -554,7 +565,16 @@ def bar_plot(
         figure_width_cm / CM_PER_INCH,
         figure_height_cm / CM_PER_INCH,
     )
-    g.figure.tight_layout()
+    
+    if legend:
+        g.figure.canvas.draw()
+        renderer = g.figure.canvas.get_renderer()
+        legend_bbox = g.legend.get_window_extent(renderer).transformed(g.figure.transFigure.inverted())
+        plot_right = legend_bbox.x0 - 0.02
+        g.figure.tight_layout(rect=(0, 0, plot_right, 1))
+    else:
+        g.figure.tight_layout()
+    
 
     return g.figure
 
@@ -955,6 +975,7 @@ fig = bar_plot(
         "Permutación": OKABE_ITO["ORANGE"],
     },
     test=["ANOVA", "Permutación"],
+    legend=True,
 )
 save_figure(fig=fig, name="Grafico 10 Potencia para los distintos patrones de desvio estandar")
 
